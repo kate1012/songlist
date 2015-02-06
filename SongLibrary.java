@@ -53,9 +53,24 @@ public class SongLibrary extends JFrame
 		addSongPanel.setLayout(new BoxLayout(addSongPanel, BoxLayout.Y_AXIS));
 		//addSongPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		
-		song1 = new Song("I'll See You At The Ring Of Fire", "Brave Bird", "You're Not Quite Ready", "2014");
-		song2 = new Song("Song 2 name", "Song 2 artist", "song 2 album", "song 2 year");
-		song3 = new Song("Song 3 name", "song 3 artist", "song 3 album", "song 3 year");
+		//song1 = new Song("I'll See You At The Ring Of Fire", "Brave Bird", "You're Not Quite Ready", "2014");
+		//song2 = new Song("Song 2 name", "Song 2 artist", "song 2 album", "song 2 year");
+		//song3 = new Song("Song 3 name", "song 3 artist", "song 3 album", "song 3 year");
+		song1 = new Song();
+		song2 = new Song();
+		song3 = new Song();
+		song1.setName("Name");
+		song1.setArtist("Artist");
+		song1.setAlbum("Album");
+		song1.setYear("Year");
+		song2.setName("Name");
+		song2.setArtist("Artist");
+		song2.setAlbum("Album");
+		song2.setYear("Year");
+		song3.setName("Name");
+		song3.setArtist("Artist");
+		song3.setAlbum("Album");
+		song3.setYear("Year");
 		
 		//labels
 		songLabel = new JLabel("song name");
@@ -149,15 +164,16 @@ public class SongLibrary extends JFrame
 				{
 					
 					JList source = (JList) ev.getSource();
-					int selectedValue = source.getSelectedIndex();
+					//int selectedValue = source.getSelectedIndex();
 					//Song selectedSong = (Song) source.getModel().getElementAt(selectedValue);
+					Song s = (Song) source.getSelectedValue();
 					//String S = (String) dlm.getElementAt(subList.getSelectedValue().toString());
 					//Song ss = (Song) listModel.getElementAt(songlist.getSelectedIndex());
 					//Song s = (Song) listModel.elementAt(songlist.getSelectedIndex());
-					String selected = source.getSelectedValue().toString();
+					//String selected = source.getSelectedValue().toString();
 					
-					songLabel.setText(selected);
-					System.out.println("dfs");
+					songLabel.setText(s.getName());
+					//artistLabel.setText(selectedSong.getArtist());
 					//albumLabel.setText(s.getAlbum());
 					songDetailsPanel.add(songLabel);
 				}
@@ -198,11 +214,22 @@ public class SongLibrary extends JFrame
 				Object selectedValue = songlist.getSelectedValue();
 				//listModel.removeElementAt(selectedIndex);
 				//listModel.remove(selectedIndex);
-				listModel.remove(1);
+				//listModel.remove(1);
 			}
 			if(e.getSource()==edit)
 			{
 				
+			}
+			if(e.getSource() == submit)
+			{
+				
+				Song song = new Song();
+				song.setName(songToAddTb.getText());
+				song.setArtist(artistToAddTb.getText());
+				song.setAlbum(albumToAddTb.getText());
+				song.setYear(yearToAddTb.getText());
+				
+				listModel.addElement(song.getName());
 			}
 		}
 	}
