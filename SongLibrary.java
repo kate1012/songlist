@@ -8,6 +8,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class SongLibrary extends JFrame 
 {
@@ -15,10 +16,11 @@ public class SongLibrary extends JFrame
 	JButton add, delete, edit, submit;
 	JTextField name, artist, album, year, songToAddTb, artistToAddTb, albumToAddTb, yearToAddTb;
 	JPanel mainPanel, addSongPanel, songDetailsPanel, buttonPanel, songListPanel;
-	JLabel songLabel, artistLabel, albumLabel, yearLabel, songToAddLabel, artistToAddLabel, albumToAddLabel, yearToAddLabel;
+	JLabel songLabel, artistLabel, albumLabel, yearLabel, songToAddLabel, artistToAddLabel, albumToAddLabel, yearToAddLabel, label;
 	JList songlist;
 	DefaultListModel listModel;
 	Song song1, song2, song3;
+	ArrayList<Song> storageList;
 	
 	public SongLibrary()
 	{
@@ -82,6 +84,7 @@ public class SongLibrary extends JFrame
 		yearLabel = new JLabel("year");
 		yearLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
+		
 		songToAddLabel = new JLabel("Song Name:");
 		artistToAddLabel = new JLabel("Artist Name:");
 		albumToAddLabel = new JLabel("Album Name:");
@@ -96,6 +99,8 @@ public class SongLibrary extends JFrame
 		//buttons
 		add = new JButton("Add");
 		add.addActionListener(lForButton);
+		//add.setBackground(Color.blue);
+		//add.setBorder(BorderFactory.createLineBorder(Color.red));
 		delete = new JButton("Delete");
 		delete.addActionListener(lForButton);
 		edit = new JButton("Edit");
@@ -128,7 +133,7 @@ public class SongLibrary extends JFrame
 		mainPanel.add(songListPanel, BorderLayout.WEST);
 		mainPanel.add(addSongPanel, BorderLayout.SOUTH);
 		
-		addSongPanel.setVisible(false);
+		//addSongPanel.setVisible(false);
 		
 		//frame attributes 
 		this.add(mainPanel);
@@ -148,14 +153,22 @@ public class SongLibrary extends JFrame
 	
 	public void createList()
 	{	
-		Song[] songs = {song1, song2, song3};
+		storageList = new ArrayList<Song>();
+		storageList.add(song1);
+		storageList.add(song2);
+		storageList.add(song3);
+		
+		//song_list.add(listOfSongs);
+		
+		//songlist = new JList(listOfSongs);
+		
+		//Song[] songs = {song1, song2, song3};
 			
 		listModel = new DefaultListModel();
-		listModel.addElement("new element");
+		//listModel.addElement("new element");
 		
 		songlist = new JList(listModel);
 		songlist.setLayoutOrientation(JList.VERTICAL);
-		//songlist.setLayout(new BoxLayout(songlist, BoxLayout.Y_AXIS));
 		songlist.addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent ev)
 			{
@@ -164,18 +177,20 @@ public class SongLibrary extends JFrame
 				{
 					
 					JList source = (JList) ev.getSource();
-					//int selectedValue = source.getSelectedIndex();
-					//Song selectedSong = (Song) source.getModel().getElementAt(selectedValue);
-					Song s = (Song) source.getSelectedValue();
-					//String S = (String) dlm.getElementAt(subList.getSelectedValue().toString());
-					//Song ss = (Song) listModel.getElementAt(songlist.getSelectedIndex());
-					//Song s = (Song) listModel.elementAt(songlist.getSelectedIndex());
-					//String selected = source.getSelectedValue().toString();
+					int selectedValue = source.getSelectedIndex();
+					Song selectedSong = (Song) storageList.get(selectedValue);
+					songLabel.setText(selectedSong.getName());
+					System.out.println(selectedSong.getName().toString());
+					artistLabel.setText(selectedSong.getArtist());
+					albumLabel.setText(selectedSong.getAlbum());
+					yearLabel.setText(selectedSong.getYear());
+					yearLabel.setText(selectedSong.toString());
+					//albumLabel.setText(text);
 					
-					songLabel.setText(s.getName());
-					//artistLabel.setText(selectedSong.getArtist());
-					//albumLabel.setText(s.getAlbum());
 					songDetailsPanel.add(songLabel);
+					songDetailsPanel.add(artistLabel);
+					songDetailsPanel.add(albumLabel);
+					songDetailsPanel.add(yearLabel);
 				}
 			}
 		});
@@ -186,17 +201,15 @@ public class SongLibrary extends JFrame
 		songlist.setVisibleRowCount(-1);
 		
 		JScrollPane listScroller = new JScrollPane(songlist);
-		//listScroller.setLayout(new BoxLayout(listScroller, BoxLayout.Y_AXIS));
 		listScroller.setPreferredSize(new Dimension(250, 80));
-		//listScroller.setBackground(Color.OPAQUE);
-		
-		
-		for(int i =0; i<songs.length; i++)
+
+		for(int i =0; i<storageList.size(); i++)
 		{
-			listModel.addElement(songs[i].getName());
+			listModel.addElement(storageList.get(i).getName());
 		}
 		
 		songListPanel.add(songlist);	
+		//songListPanel.add(song_list);
 	}
 	
 	class ListenForButton implements ActionListener
